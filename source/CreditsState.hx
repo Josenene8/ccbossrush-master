@@ -31,6 +31,10 @@ class AchievementState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Watching The Creditroll", null);
 		#end
+			
+		#if android
+		addVirtualPad(NONE, A_B);
+		#end
 
 	}
 
