@@ -1399,7 +1399,9 @@ class PlayState extends MusicBeatState
 			songPosBar.cameras = [camHUD];
 			songName.cameras = [camHUD];
 		}
-		
+		#if android
+	        addAndroidControls();
+	#end
 		// Song check real quick
 		switch(curSong)
 		{
@@ -2601,14 +2603,7 @@ class PlayState extends MusicBeatState
 		if (isStoryMode)
 			campaignMisses = misses;
 
-		if (!loadRep)
-			rep.SaveReplay(saveNotes, saveJudge, replayAna);
-		else
-		{
-			PlayStateChangeables.botPlay = false;
-			PlayStateChangeables.scrollSpeed = 1;
-			PlayStateChangeables.useDownscroll = false;
-		}
+		
 
 		if (FlxG.save.data.fpsCap > 290)
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
@@ -2712,9 +2707,10 @@ class PlayState extends MusicBeatState
 					StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
 
 					if (SONG.validScore)
-					{
+					{       #if newgrounds
 						NGio.unlockMedal(60961);
-						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty)
+						#end
 					}
 
 					FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
@@ -3174,12 +3170,10 @@ class PlayState extends MusicBeatState
 							goodNoteHit(daNote);
 					});
 				}
-		 
-				if ((KeyBinds.gamepad && !FlxG.keys.justPressed.ANY) || nonCpp)
+
+				// PRESSES, check for note hits
+				if (pressArray.contains(true) && generatedMusic) 
 				{
-					// PRESSES, check for note hits
-					if (pressArray.contains(true) && generatedMusic) 
-					{
 						boyfriend.holdTimer = 0;
 			
 						var possibleNotes:Array<Note> = []; // notes that can be hit
@@ -3262,10 +3256,10 @@ class PlayState extends MusicBeatState
 							}
 					}
 
-					if (!loadRep)
+					/*if (!loadRep)
 						for (i in anas)
 							if (i != null)
-								replayAna.anaArray.push(i); // put em all there
+								replayAna.anaArray.push(i); // put em all there*/
 				}
 				notes.forEachAlive(function(daNote:Note)
 				{
