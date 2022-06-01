@@ -1398,10 +1398,12 @@ class PlayState extends MusicBeatState
 			songPosBG.cameras = [camHUD];
 			songPosBar.cameras = [camHUD];
 			songName.cameras = [camHUD];
-		}
-		#if android
+			
+			#if android
 	        addAndroidControls();
 	#end
+		}
+	
 		// Song check real quick
 		switch(curSong)
 		{
